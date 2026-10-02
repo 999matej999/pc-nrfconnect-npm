@@ -1,3 +1,9 @@
+## 2.2.8 - 2026-10-02
+
+### Changed
+
+- nPM1300 and nPM1304: Some UI changes in the System Features tab.
+
 ## 2.2.7 - 2026-09-14
 
 ### Changed
