@@ -8,11 +8,8 @@ import { helpers } from '../../tests/helpers';
 import { setupMocksWithShellParser } from './helpers';
 
 describe('PMIC 1300 - On-board load', () => {
-    const {
-        mockEnqueueRequest,
-        mockOnBoardLoadMeasurementsUpdate,
-        pmic,
-    } = setupMocksWithShellParser();
+    const { mockEnqueueRequest, mockOnBoardLoadMeasurementsUpdate, pmic } =
+        setupMocksWithShellParser();
 
     beforeEach(() => {
         jest.clearAllMocks();

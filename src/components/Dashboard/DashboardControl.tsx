@@ -77,9 +77,7 @@ export default ({ active }: PaneProps) => {
                     onBoardLoad={onBoardLoad}
                     onBoardLoadModule={npmDevice.onBoardLoadModule}
                     measurements={onBoardLoadMeasurements}
-                    measurementsSupported={
-                        npmDevice.deviceType === 'npm1300'
-                    }
+                    measurementsSupported={npmDevice.deviceType === 'npm1300'}
                     disabled={disabled}
                 />
             )}

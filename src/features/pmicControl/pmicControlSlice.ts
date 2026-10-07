@@ -506,6 +506,7 @@ export const {
     setBucks,
     updateBuck,
     setOnBoardLoad,
+    setOnBoardLoadMeasurements,
     updateOnBoardLoad,
     setLdos,
     updateLdo,

@@ -14,8 +14,8 @@ import {
 import { DocumentationTooltip } from '../../../features/pmicControl/npm/documentation/documentation';
 import {
     type OnBoardLoad,
-    type OnBoardLoadModule,
     type OnBoardLoadMeasurements,
+    type OnBoardLoadModule,
 } from '../../../features/pmicControl/npm/types';
 
 export default ({
@@ -59,7 +59,7 @@ export default ({
             if (requestInFlight) return;
 
             requestInFlight = true;
-            void getMeasurements
+            getMeasurements
                 .call(onBoardLoadModule.get)
                 .then(() => {
                     if (active) setMeasurementRequestFailed(false);
@@ -126,15 +126,21 @@ export default ({
                             <div className="tw-grid tw-grid-cols-3 tw-gap-3">
                                 <div>
                                     <div className="tw-text-xs">ILOAD</div>
-                                    <div>{measurements.iLoad.toFixed(2)} mA</div>
+                                    <div>
+                                        {measurements.iLoad.toFixed(2)} mA
+                                    </div>
                                 </div>
                                 <div>
                                     <div className="tw-text-xs">VLOAD</div>
-                                    <div>{measurements.vLoad.toFixed(3)} V</div>
+                                    <div>
+                                        {measurements.vLoad.toFixed(3)} V
+                                    </div>
                                 </div>
                                 <div>
                                     <div className="tw-text-xs">TLOAD</div>
-                                    <div>{measurements.tLoad.toFixed(1)} C</div>
+                                    <div>
+                                        {measurements.tLoad.toFixed(1)} C
+                                    </div>
                                 </div>
                             </div>
                             {now - measurements.measuredAt > 6000 && (

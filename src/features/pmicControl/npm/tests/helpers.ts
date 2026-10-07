@@ -104,9 +104,7 @@ export const setupMocksBase = (
     pmic.onBoostUpdate(mockOnBoostUpdate);
     pmic.onChargerUpdate(mockOnChargerUpdate);
     pmic.onOnBoardLoadUpdate(mockOnBoardLoadUpdate);
-    pmic.onOnBoardLoadMeasurementsUpdate(
-        mockOnBoardLoadMeasurementsUpdate,
-    );
+    pmic.onOnBoardLoadMeasurementsUpdate(mockOnBoardLoadMeasurementsUpdate);
     pmic.onGPIOUpdate(mockOnGpioUpdate);
     pmic.onGpioLedDrvUpdate(mockOnGpioLedDrvUpdate);
     pmic.onLEDUpdate(mockOnLEDUpdate);
