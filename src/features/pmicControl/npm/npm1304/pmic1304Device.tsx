@@ -42,7 +42,6 @@ export default class Npm1304 extends nPM1300Device {
             'npm1304',
             npm1304FWVersion,
         );
-
     }
 
     generateExport(
