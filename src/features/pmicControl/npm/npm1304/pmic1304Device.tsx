@@ -9,10 +9,7 @@ import { type ShellParser } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { type RootState } from '../../../../appReducer';
 import type BaseNpmDevice from '../basePmicDevice';
 import nPM1300Device from '../npm1300/pmic1300Device';
-import { parseLogData, parseToFloat } from '../pmicHelpers';
 import {
-    type LoggingEvent,
-    type OnBoardLoad,
     type OnBoardLoadModule as OnBoardLoadModuleBase,
     type PmicDialog,
 } from '../types';
@@ -46,28 +43,6 @@ export default class Npm1304 extends nPM1300Device {
             npm1304FWVersion,
         );
 
-        if (shellParser) {
-            this.releaseAll.push(
-                shellParser.onShellLoggingEvent(logEvent => {
-                    parseLogData(logEvent, loggingEvent => {
-                        switch (loggingEvent.module) {
-                            case 'module_cc_sink':
-                                this.processModuleCCSink(loggingEvent);
-                                break;
-                        }
-                    });
-                }),
-            );
-        }
-    }
-
-    private processModuleCCSink({ message }: LoggingEvent) {
-        if (message.startsWith('cc_level:')) {
-            const value = parseToFloat(message);
-            this.eventEmitter.emit('onOnBoardLoadUpdate', {
-                iLoad: value,
-            } satisfies OnBoardLoad);
-        }
     }
 
     generateExport(
