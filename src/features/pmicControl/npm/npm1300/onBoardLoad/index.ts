@@ -31,7 +31,7 @@ export default class Module implements OnBoardLoadModule {
         offlineMode,
         shellParser,
     }: ModuleParams) {
-        this._get = new OnBoardLoadGet(sendCommand);
+        this._get = new OnBoardLoadGet(sendCommand, eventEmitter);
         this._set = new OnBoardLoadSet(eventEmitter, sendCommand, offlineMode);
         this._callbacks = onBoardLoadCallbacks(shellParser, eventEmitter);
     }

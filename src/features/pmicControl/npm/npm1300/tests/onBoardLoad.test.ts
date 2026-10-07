@@ -8,7 +8,11 @@ import { helpers } from '../../tests/helpers';
 import { setupMocksWithShellParser } from './helpers';
 
 describe('PMIC 1300 - On-board load', () => {
-    const { mockEnqueueRequest, pmic } = setupMocksWithShellParser();
+    const {
+        mockEnqueueRequest,
+        mockOnBoardLoadMeasurementsUpdate,
+        pmic,
+    } = setupMocksWithShellParser();
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -25,6 +29,32 @@ describe('PMIC 1300 - On-board load', () => {
             expect.anything(),
             undefined,
             true,
+        );
+    });
+
+    test('Reads measured active-load values', async () => {
+        const response =
+            'tload=33.687500 C\niload=99.300000 mA\nvload=3.740190 V';
+        mockEnqueueRequest.mockImplementation((command, callbacks) => {
+            callbacks?.onSuccess(response, command);
+            return Promise.resolve();
+        });
+
+        await pmic.onBoardLoadModule?.get.measurements?.();
+
+        expect(mockEnqueueRequest).toHaveBeenCalledWith(
+            'cc_sink measurements get',
+            expect.anything(),
+            undefined,
+            true,
+        );
+        expect(mockOnBoardLoadMeasurementsUpdate).toHaveBeenCalledWith(
+            expect.objectContaining({
+                tLoad: 33.6875,
+                iLoad: 99.3,
+                vLoad: 3.74019,
+                measuredAt: expect.any(Number),
+            }),
         );
     });
 });
