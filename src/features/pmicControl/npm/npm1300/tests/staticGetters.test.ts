@@ -19,7 +19,7 @@ describe('PMIC 1300 - Static getters', () => {
         expect(pmic.onBoardLoadModule).toBeDefined();
         expect(pmic.onBoardLoadModule?.ranges.iLoad).toStrictEqual({
             min: 0,
-            max: 99,
+            max: 500,
             decimals: 2,
             step: 0.01,
         });
