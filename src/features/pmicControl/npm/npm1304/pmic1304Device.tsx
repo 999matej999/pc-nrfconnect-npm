@@ -19,7 +19,6 @@ import {
 import { BatteryProfiler } from './batteryProfiler';
 import ChargerModule from './charger';
 import LdoModule from './ldo';
-import OnBoardLoadModule from './onBoardLoad';
 
 export const npm1304FWVersion = '0.5.2+0';
 
@@ -36,7 +35,6 @@ export default class Npm1304 extends nPM1300Device {
             {
                 ChargerModule,
                 BatteryProfiler,
-                OnBoardLoadModule,
                 ldos: {
                     Module: LdoModule,
                     count: 2,
