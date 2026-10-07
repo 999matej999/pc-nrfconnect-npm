@@ -132,15 +132,11 @@ export default ({
                                 </div>
                                 <div>
                                     <div className="tw-text-xs">VLOAD</div>
-                                    <div>
-                                        {measurements.vLoad.toFixed(3)} V
-                                    </div>
+                                    <div>{measurements.vLoad.toFixed(3)} V</div>
                                 </div>
                                 <div>
                                     <div className="tw-text-xs">TLOAD</div>
-                                    <div>
-                                        {measurements.tLoad.toFixed(1)} C
-                                    </div>
+                                    <div>{measurements.tLoad.toFixed(1)} C</div>
                                 </div>
                             </div>
                             {now - measurements.measuredAt > 6000 && (
