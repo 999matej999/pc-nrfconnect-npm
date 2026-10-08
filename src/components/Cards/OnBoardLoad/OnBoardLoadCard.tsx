@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Card,
     NumberInput,
@@ -35,8 +35,12 @@ export default ({
 }) => {
     const range = onBoardLoadModule.ranges.iLoad;
     const card = `OnBoardLoad`;
+    const initialEnabledILoad = Math.min(Math.max(1, range.min), range.max);
 
     const [internalILoad, setInternalILoad] = useState(onBoardLoad.iLoad);
+    const lastEnabledILoad = useRef(
+        onBoardLoad.iLoad > 0 ? onBoardLoad.iLoad : initialEnabledILoad,
+    );
     const [measurementRequestFailed, setMeasurementRequestFailed] =
         useState(false);
     const [now, setNow] = useState(Date.now());
@@ -44,6 +48,9 @@ export default ({
     // NumberInputSliderWithUnit do not use boost.<prop> as value as we send only at on change complete
     useEffect(() => {
         setInternalILoad(onBoardLoad.iLoad);
+        if (onBoardLoad.iLoad > 0) {
+            lastEnabledILoad.current = onBoardLoad.iLoad;
+        }
     }, [onBoardLoad]);
 
     useEffect(() => {
@@ -93,7 +100,15 @@ export default ({
                         <Toggle
                             label="Enabled"
                             isToggled={onBoardLoad.iLoad > 0}
-                            disabled
+                            onToggle={enabled => {
+                                if (!enabled && onBoardLoad.iLoad > 0) {
+                                    lastEnabledILoad.current = onBoardLoad.iLoad;
+                                }
+                                onBoardLoadModule.set.iLoad(
+                                    enabled ? lastEnabledILoad.current : 0,
+                                );
+                            }}
+                            disabled={disabled}
                         />
                     </div>
                 </div>
@@ -113,7 +128,10 @@ export default ({
                 range={range}
                 value={internalILoad}
                 onChange={setInternalILoad}
-                onChangeComplete={value => onBoardLoadModule.set.iLoad(value)}
+                onChangeComplete={value => {
+                    if (value > 0) lastEnabledILoad.current = value;
+                    onBoardLoadModule.set.iLoad(value);
+                }}
                 showSlider
             />
             {measurementsSupported && (
