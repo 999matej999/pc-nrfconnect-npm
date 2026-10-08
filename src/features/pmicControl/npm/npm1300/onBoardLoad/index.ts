@@ -25,12 +25,15 @@ export default class Module implements OnBoardLoadModule {
     private _get: OnBoardLoadGet;
     private _set: OnBoardLoadSet;
     private _callbacks: (() => void)[];
+    private maxILoad: number;
     constructor({
         sendCommand,
         eventEmitter,
         offlineMode,
         shellParser,
+        npmDevice,
     }: ModuleParams) {
+        this.maxILoad = npmDevice.deviceType === 'npm1300' ? 500 : 99;
         this._get = new OnBoardLoadGet(sendCommand, eventEmitter);
         this._set = new OnBoardLoadSet(eventEmitter, sendCommand, offlineMode);
         this._callbacks = onBoardLoadCallbacks(shellParser, eventEmitter);
@@ -52,7 +55,7 @@ export default class Module implements OnBoardLoadModule {
         return {
             iLoad: {
                 min: 0,
-                max: 99,
+                max: this.maxILoad,
                 decimals: 2,
                 step: 0.01,
             },
