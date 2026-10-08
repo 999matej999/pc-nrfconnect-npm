@@ -119,11 +119,14 @@ export default ({
                     </DocumentationTooltip>
                 }
                 unit="mA"
-                disabled={disabled || !loadEnabled}
+                disabled={disabled}
                 range={range}
                 value={internalILoad}
                 onChange={setInternalILoad}
-                onChangeComplete={value => onBoardLoadModule.set.iLoad(value)}
+                onChangeComplete={value => {
+                    setInternalILoad(value);
+                    if (loadEnabled) onBoardLoadModule.set.iLoad(value);
+                }}
                 showSlider
             />
             {measurementsSupported && (
