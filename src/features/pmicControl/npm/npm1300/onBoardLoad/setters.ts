@@ -20,7 +20,7 @@ export class OnBoardLoadSet {
         ) => void,
         private offlineMode: boolean,
     ) {
-        this.get = new OnBoardLoadGet(sendCommand);
+        this.get = new OnBoardLoadGet(sendCommand, eventEmitter);
     }
 
     async all(onBoardLoad: OnBoardLoad) {

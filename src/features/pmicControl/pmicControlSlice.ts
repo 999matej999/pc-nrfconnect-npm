@@ -22,6 +22,7 @@ import type {
     LED,
     LowPowerConfig,
     OnBoardLoad,
+    OnBoardLoadMeasurements,
     PartialUpdate,
     PmicChargingState,
     PmicDialog,
@@ -40,6 +41,7 @@ interface pmicControlState {
     boosts: Boost[];
     bucks: Buck[];
     onBoardLoad?: OnBoardLoad;
+    onBoardLoadMeasurements?: OnBoardLoadMeasurements;
     ldos: Ldo[];
     gpios: GPIO[];
     gpioleddrvs: GPIOLEDDrv[];
@@ -127,6 +129,9 @@ const pmicControlSlice = createSlice({
         },
         setPmicState(state, action: PayloadAction<PmicState>) {
             state.pmicState = action.payload;
+            if (action.payload !== 'pmic-connected') {
+                state.onBoardLoadMeasurements = undefined;
+            }
         },
         setCharger(state, action: PayloadAction<Charger | undefined>) {
             state.charger = action.payload;
@@ -170,6 +175,12 @@ const pmicControlSlice = createSlice({
         },
         setOnBoardLoad(state, action: PayloadAction<OnBoardLoad | undefined>) {
             state.onBoardLoad = action.payload;
+        },
+        setOnBoardLoadMeasurements(
+            state,
+            action: PayloadAction<OnBoardLoadMeasurements | undefined>,
+        ) {
+            state.onBoardLoadMeasurements = action.payload;
         },
         updateOnBoardLoad(state, action: PayloadAction<Partial<OnBoardLoad>>) {
             if (state.onBoardLoad) {
@@ -372,6 +383,10 @@ export const getPmicState = (state: RootState) =>
 export const getCharger = (state: RootState) => state.app.pmicControl.charger;
 export const getOnBoardLoad = (state: RootState) =>
     state.app.pmicControl.onBoardLoad;
+export const getOnBoardLoadMeasurements = (state: RootState) =>
+    state.app.pmicControl.pmicState === 'pmic-connected'
+        ? state.app.pmicControl.onBoardLoadMeasurements
+        : undefined;
 export const getLatestAdcSample = (state: RootState) => {
     const { pmicState, latestAdcSample } = state.app.pmicControl;
     return parseConnectedState(
@@ -491,6 +506,7 @@ export const {
     setBucks,
     updateBuck,
     setOnBoardLoad,
+    setOnBoardLoadMeasurements,
     updateOnBoardLoad,
     setLdos,
     updateLdo,

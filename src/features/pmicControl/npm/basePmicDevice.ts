@@ -53,6 +53,7 @@ import {
     type NpmModel,
     type NpmPeripherals,
     type OnBoardLoad,
+    type OnBoardLoadMeasurements,
     type OnBoardLoadModule,
     type PartialUpdate,
     type PmicChargingState,
@@ -775,6 +776,13 @@ export default abstract class BaseNpmDevice {
     ) {
         return this.setupHandler<Partial<OnBoardLoad>, true>(
             'onOnBoardLoadUpdate',
+        )(handler);
+    }
+    onOnBoardLoadMeasurementsUpdate(
+        handler: (payload: OnBoardLoadMeasurements) => void,
+    ) {
+        return this.setupHandler<OnBoardLoadMeasurements>(
+            'onOnBoardLoadMeasurementsUpdate',
         )(handler);
     }
     onFuelGaugeUpdate(handler: (payload: FuelGauge) => void) {

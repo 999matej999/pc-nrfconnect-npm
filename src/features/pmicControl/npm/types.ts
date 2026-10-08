@@ -277,6 +277,13 @@ export type OnBoardLoad = {
     iLoad: number;
 };
 
+export type OnBoardLoadMeasurements = {
+    iLoad: number;
+    vLoad: number;
+    tLoad: number;
+    measuredAt: number;
+};
+
 export type Boost = {
     vOutVSet: number;
     vOutSoftware: number;
@@ -1042,6 +1049,7 @@ export interface OnBoardLoadModule {
     get: {
         all: () => void;
         iLoad: () => void;
+        measurements?: () => Promise<void>;
     };
     set: {
         all: (onBoardLoad: OnBoardLoad) => Promise<void>;
