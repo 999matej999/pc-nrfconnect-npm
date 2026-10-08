@@ -37,14 +37,18 @@ export default ({
     const card = `OnBoardLoad`;
 
     const [internalILoad, setInternalILoad] = useState(onBoardLoad.iLoad);
+    const [loadEnabled, setLoadEnabled] = useState(onBoardLoad.iLoad > 0);
     const [measurementRequestFailed, setMeasurementRequestFailed] =
         useState(false);
     const [now, setNow] = useState(Date.now());
 
     // NumberInputSliderWithUnit do not use boost.<prop> as value as we send only at on change complete
     useEffect(() => {
-        setInternalILoad(onBoardLoad.iLoad);
-    }, [onBoardLoad]);
+        if (onBoardLoad.iLoad > 0) {
+            setInternalILoad(onBoardLoad.iLoad);
+            setLoadEnabled(true);
+        }
+    }, [onBoardLoad.iLoad]);
 
     useEffect(() => {
         const getMeasurements = onBoardLoadModule.get.measurements;
@@ -92,8 +96,14 @@ export default ({
                     <div className="d-flex">
                         <Toggle
                             label="Enabled"
-                            isToggled={onBoardLoad.iLoad > 0}
-                            disabled
+                            isToggled={loadEnabled}
+                            onToggle={enabled => {
+                                setLoadEnabled(enabled);
+                                onBoardLoadModule.set.iLoad(
+                                    enabled ? internalILoad : 0,
+                                );
+                            }}
+                            disabled={disabled}
                         />
                     </div>
                 </div>
@@ -113,7 +123,10 @@ export default ({
                 range={range}
                 value={internalILoad}
                 onChange={setInternalILoad}
-                onChangeComplete={value => onBoardLoadModule.set.iLoad(value)}
+                onChangeComplete={value => {
+                    setInternalILoad(value);
+                    if (loadEnabled) onBoardLoadModule.set.iLoad(value);
+                }}
                 showSlider
             />
             {measurementsSupported && (
