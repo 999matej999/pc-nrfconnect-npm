@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Card,
     NumberInput,
@@ -35,23 +35,20 @@ export default ({
 }) => {
     const range = onBoardLoadModule.ranges.iLoad;
     const card = `OnBoardLoad`;
-    const initialEnabledILoad = Math.min(Math.max(1, range.min), range.max);
 
     const [internalILoad, setInternalILoad] = useState(onBoardLoad.iLoad);
-    const lastEnabledILoad = useRef(
-        onBoardLoad.iLoad > 0 ? onBoardLoad.iLoad : initialEnabledILoad,
-    );
+    const [loadEnabled, setLoadEnabled] = useState(onBoardLoad.iLoad > 0);
     const [measurementRequestFailed, setMeasurementRequestFailed] =
         useState(false);
     const [now, setNow] = useState(Date.now());
 
     // NumberInputSliderWithUnit do not use boost.<prop> as value as we send only at on change complete
     useEffect(() => {
-        setInternalILoad(onBoardLoad.iLoad);
         if (onBoardLoad.iLoad > 0) {
-            lastEnabledILoad.current = onBoardLoad.iLoad;
+            setInternalILoad(onBoardLoad.iLoad);
+            setLoadEnabled(true);
         }
-    }, [onBoardLoad]);
+    }, [onBoardLoad.iLoad]);
 
     useEffect(() => {
         const getMeasurements = onBoardLoadModule.get.measurements;
@@ -99,14 +96,11 @@ export default ({
                     <div className="d-flex">
                         <Toggle
                             label="Enabled"
-                            isToggled={onBoardLoad.iLoad > 0}
+                            isToggled={loadEnabled}
                             onToggle={enabled => {
-                                if (!enabled && onBoardLoad.iLoad > 0) {
-                                    lastEnabledILoad.current =
-                                        onBoardLoad.iLoad;
-                                }
+                                setLoadEnabled(enabled);
                                 onBoardLoadModule.set.iLoad(
-                                    enabled ? lastEnabledILoad.current : 0,
+                                    enabled ? internalILoad : 0,
                                 );
                             }}
                             disabled={disabled}
@@ -125,14 +119,11 @@ export default ({
                     </DocumentationTooltip>
                 }
                 unit="mA"
-                disabled={disabled}
+                disabled={disabled || !loadEnabled}
                 range={range}
                 value={internalILoad}
                 onChange={setInternalILoad}
-                onChangeComplete={value => {
-                    if (value > 0) lastEnabledILoad.current = value;
-                    onBoardLoadModule.set.iLoad(value);
-                }}
+                onChangeComplete={value => onBoardLoadModule.set.iLoad(value)}
                 showSlider
             />
             {measurementsSupported && (
