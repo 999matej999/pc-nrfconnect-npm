@@ -21,6 +21,7 @@ import {
     type LED,
     type LowPowerConfig,
     type OnBoardLoad,
+    type OnBoardLoadMeasurements,
     type PartialUpdate,
     type PmicDialog,
     type POF,
@@ -55,6 +56,9 @@ export const setupMocksBase = (
     );
     const mockOnBoardLoadUpdate = jest.fn(
         (_partialUpdate: Partial<OnBoardLoad>) => {},
+    );
+    const mockOnBoardLoadMeasurementsUpdate = jest.fn(
+        (_measurements: OnBoardLoadMeasurements) => {},
     );
     const mockOnChargingStatusUpdate = jest.fn(() => {});
     const mockOnFuelGaugeUpdate = jest.fn(() => {});
@@ -100,6 +104,7 @@ export const setupMocksBase = (
     pmic.onBoostUpdate(mockOnBoostUpdate);
     pmic.onChargerUpdate(mockOnChargerUpdate);
     pmic.onOnBoardLoadUpdate(mockOnBoardLoadUpdate);
+    pmic.onOnBoardLoadMeasurementsUpdate(mockOnBoardLoadMeasurementsUpdate);
     pmic.onGPIOUpdate(mockOnGpioUpdate);
     pmic.onGpioLedDrvUpdate(mockOnGpioLedDrvUpdate);
     pmic.onLEDUpdate(mockOnLEDUpdate);
@@ -128,6 +133,7 @@ export const setupMocksBase = (
         mockOnChargerUpdate,
         mockOnChargingStatusUpdate,
         mockOnBoardLoadUpdate,
+        mockOnBoardLoadMeasurementsUpdate,
         mockOnFuelGaugeUpdate,
         mockOnLdoUpdate,
         mockOnGpioUpdate,

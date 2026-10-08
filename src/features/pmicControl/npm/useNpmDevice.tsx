@@ -51,6 +51,7 @@ import {
     setLowPowerConfig,
     setNpmDevice,
     setOnBoardLoad,
+    setOnBoardLoadMeasurements,
     setPmicState,
     setPOFs,
     setPowerId,
@@ -264,6 +265,12 @@ export default () => {
             releaseAll.push(
                 npmDevice.onOnBoardLoadUpdate(payload => {
                     dispatch(updateOnBoardLoad(payload));
+                }),
+            );
+
+            releaseAll.push(
+                npmDevice.onOnBoardLoadMeasurementsUpdate(payload => {
+                    dispatch(setOnBoardLoadMeasurements(payload));
                 }),
             );
 

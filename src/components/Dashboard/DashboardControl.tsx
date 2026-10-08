@@ -18,6 +18,7 @@ import {
     getLdos,
     getNpmDevice,
     getOnBoardLoad,
+    getOnBoardLoadMeasurements,
 } from '../../features/pmicControl/pmicControlSlice';
 import useIsUIDisabled from '../../features/useIsUIDisabled';
 import BatteryCard from '../Cards/Battery/BatteryCard';
@@ -33,6 +34,7 @@ export default ({ active }: PaneProps) => {
     const npmDevice = useSelector(getNpmDevice);
     const charger = useSelector(getCharger);
     const onBoardLoad = useSelector(getOnBoardLoad);
+    const onBoardLoadMeasurements = useSelector(getOnBoardLoadMeasurements);
     const bucks = useSelector(getBucks);
     const boosts = useSelector(getBoosts);
     const ldos = useSelector(getLdos);
@@ -74,6 +76,8 @@ export default ({ active }: PaneProps) => {
                 <OnBoardLoadCard
                     onBoardLoad={onBoardLoad}
                     onBoardLoadModule={npmDevice.onBoardLoadModule}
+                    measurements={onBoardLoadMeasurements}
+                    measurementsSupported={npmDevice.deviceType === 'npm1300'}
                     disabled={disabled}
                 />
             )}
