@@ -102,7 +102,8 @@ export default ({
                             isToggled={onBoardLoad.iLoad > 0}
                             onToggle={enabled => {
                                 if (!enabled && onBoardLoad.iLoad > 0) {
-                                    lastEnabledILoad.current = onBoardLoad.iLoad;
+                                    lastEnabledILoad.current =
+                                        onBoardLoad.iLoad;
                                 }
                                 onBoardLoadModule.set.iLoad(
                                     enabled ? lastEnabledILoad.current : 0,
